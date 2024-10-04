@@ -1,16 +1,46 @@
 public class Member  extends User{
 
-        public Member(String name, String email, String password) {
-            super(name, email, password );
+
+        private Book book;
+        private boolean borrowing;
+
+        public Member(String name, Book book, boolean borrowing) {
+            super(name);
+            this.book = book;
+            this.borrowing = borrowing;
         }
 
-        public void borrowBook(Book book) {
+
+        public void run() {
+            try {
+                if (borrowing) {
+                    borrowBook(book); // Borrow the book
+                } else {
+                    returnBook(book); // Return the book
+                }
+            } catch (LibraryException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        // Borrow a book
+        public void borrowBook(Book book) throws LibraryException {
             book.borrow();
         }
 
-        public void returnBook(Book book) {
-            book.returnItem();
+        // Return a book
+        public void returnBook(Book book) throws LibraryException {
+            book.returnBook();
         }
-
     }
 
+
+//// Borrow a book
+//    public void borrowBook(Book book) throws LibraryException {
+//        book.borrow();
+//    }
+//
+//    // Return a book
+//    public void returnBook(Book book) throws LibraryException {
+//        book.returnBook();
+//    }

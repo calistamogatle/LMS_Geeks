@@ -10,7 +10,10 @@ public class User {
             this.password= password;
         }
 
-        // Getters
+    public User(String name) {
+    }
+
+    // Getters
         public String getName() {
             return name;
         }

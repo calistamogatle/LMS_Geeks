@@ -4,11 +4,18 @@ class Book implements Loanable {
     private String ISBN;
     private boolean available;
 
-    public Book(String title, String author, String ISBN) {
+    public Book(String title) {
         this.title = title;
-        this.author = author;
-        this.ISBN = ISBN;
+
         this.available = true; // Book is initially available
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     // Getter and setter for availability
@@ -31,14 +38,33 @@ class Book implements Loanable {
         }
     }
 
-    @Override
-    public void returnItem() {
-        available = true;
-        System.out.println(title + " is returned.");
-    }
+        // Borrow the book with exception handling
+        public synchronized void borrows () throws LibraryException {
+            if (!available) {
+                throw new LibraryException("Book '" + title + "' is already borrowed.");
+            } else {
+                available = false;
+                System.out.println(Thread.currentThread().getName() + " borrowed: " + title);
+            }
+        }
+            @Override
+            public void returnItem () {
+                available = true;
+                System.out.println(title + " is returned.");
+            }
+// Return the book with exception handling
+            public synchronized void returnBook () throws LibraryException {
+                if (available) {
+                    throw new LibraryException("Book '" + title + "' hasn't been borrowed yet.");
+                } else {
+                    available = true;
+                    System.out.println(Thread.currentThread().getName() + " returned: " + title);
+                }
 
+            }
     @Override
-    public String toString() {
+    public String toString () {
         return title + " by " + author + " (ISBN: " + ISBN + ")";
     }
 }
+
