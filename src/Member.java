@@ -1,46 +1,41 @@
-public class Member  extends User{
+public class Member extends User  {
 
+    public Member(String name, String email, String password) {
+        super(name,email,password);
+    }
 
-        private Book book;
-        private boolean borrowing;
-
-        public Member(String name, Book book, boolean borrowing) {
-            super(name);
-            this.book = book;
-            this.borrowing = borrowing;
-        }
-
-
-        public void run() {
+    @Override
+    public void performAction(Library library, Book book, String action) {
+        if (action.equalsIgnoreCase("borrow")) {
             try {
-                if (borrowing) {
-                    borrowBook(book); // Borrow the book
-                } else {
-                    returnBook(book); // Return the book
-                }
+                borrowBook(book, library);
             } catch (LibraryException e) {
-                System.out.println(e.getMessage());
+                throw new RuntimeException(e);
             }
+        } else if (action.equalsIgnoreCase("return")) {
+            returnBook(book, library);
+        } else {
+            System.out.println("Invalid action for a member.");
         }
+    }
 
-        // Borrow a book
-        public void borrowBook(Book book) throws LibraryException {
-            book.borrow();
-        }
-
-        // Return a book
-        public void returnBook(Book book) throws LibraryException {
-            book.returnBook();
+    public void borrowBook(Book book, Library library) throws LibraryException {
+        if (library.isBookAvailable(book)) {
+            library.borrowBook(book, this);
+            System.out.println(getName() + " borrowed " + book.getTitle());
+        } else {
+            System.out.println("Sorry, " + book.getTitle() + " is unavailable.");
         }
     }
 
 
-//// Borrow a book
-//    public void borrowBook(Book book) throws LibraryException {
-//        book.borrow();
-//    }
-//
-//    // Return a book
-//    public void returnBook(Book book) throws LibraryException {
-//        book.returnBook();
-//    }
+    public void returnBook(Book book, Library library) throws LibraryException {
+        library.returnBook(book, this);
+        System.out.println(getName() + " returned " + book.getTitle());
+    }
+
+    public boolean login(String email, String password) {
+
+        return false;
+    }
+}
