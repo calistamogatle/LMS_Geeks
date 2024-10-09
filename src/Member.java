@@ -13,7 +13,11 @@ public class Member extends User  {
                 throw new RuntimeException(e);
             }
         } else if (action.equalsIgnoreCase("return")) {
-            returnBook(book, library);
+            try {
+                returnBook(book, library);
+            } catch (LibraryException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             System.out.println("Invalid action for a member.");
         }
